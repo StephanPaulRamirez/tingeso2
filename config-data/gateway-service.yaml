@@ -32,7 +32,7 @@ spring:
         - id: evaluateCredit-service
           uri: lb://evaluateCredit-service
           predicates:
-            - Path=/api/v1/loanEvaluation/**, /api/v1/documents/**
+            - Path=/api/v1/loanEvaluation/**, /api/v1/getDocuments/getByLoanId/**
         - id: followCredit-service
           uri: lb://followCredit-service
           predicates:

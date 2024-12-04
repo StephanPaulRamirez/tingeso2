@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+    tools {
+        maven 'Maven'
+    }
+    stages {
+        stage('Build maven') {
+            steps {
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/StephanPaulRamirez/tingeso2.git']])
+                dir('evaluateCredit-service') {  // Cambia a la carpeta del microservicio
+                    bat 'mvn clean package'
+                }
+            }
+        }  
+
+        stage('Build docker image') {
+            steps {
+                script {
+                    bat 'docker build -t stephanpaulramirez/evaluatecredit-service:latest -f evaluateCredit-service/Dockerfile evaluateCredit-service'
+                }
+            }
+        }
+
+        stage('Push image to Docker Hub') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'dhpswid', variable: 'dhpsw')]) {
+                        bat 'docker login -u stephanpaulramirez -p %dhpsw%'
+                    }
+                    bat 'docker push stephanpaulramirez/evaluatecredit-service:latest'
+                }
+            }
+        }
+    }
+}
+
+
+

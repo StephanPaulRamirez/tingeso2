@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simulate-service
+  labels:
+    app: simulate-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simulate-service
+  template:
+    metadata:
+      labels:
+        app: simulate-service
+    spec:
+      containers:
+      - name: simulate-service
+        image: tinyantu/simulate-service:latest
+        ports:
+        - containerPort: 8080  # Puerto interno del contenedor (opcional)
+        env:
+        - name: SERVER_PORT
+          value: "0"  # Puerto aleatorio
+        - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+          value: "http://eureka-service:8761/eureka"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simulate-service
+spec:
+  selector:
+    app: simulate-service
+  ports:
+  - port: 80  # Puerto expuesto dentro del cluster
+    targetPort: 8080
+  type: ClusterIP

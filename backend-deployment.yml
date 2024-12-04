@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: tinyantu/backend:latest
+        image: stephanpaulramirez/backend:latest
         ports:
         - containerPort: 8002
         env:

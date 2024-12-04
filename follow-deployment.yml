@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: requestcredit-service
-        image: tinyantu/requestcredit-service:latest
+        image: stephanpaulramirez/requestcredit-service:latest
         ports:
         - containerPort: 8080  # Puerto interno del contenedor (opcional)
         env:

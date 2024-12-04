@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: evaluatecredit-service
-        image: tinyantu/evaluatecredit-service:latest
+        image: stephanpaulramirez/evaluatecredit-service:latest
         ports:
         - containerPort: 8080  # Puerto interno del contenedor (opcional)
         env:

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: simulate-service
-        image: tinyantu/simulate-service:latest
+        image: stephanpaulramirez/simulate-service:latest
         ports:
         - containerPort: 8080  # Puerto interno del contenedor (opcional)
         env:

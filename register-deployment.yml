@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: register-service
-        image: tinyantu/register-service:latest
+        image: stephanpaulramirez/register-service:latest
         ports:
         - containerPort: 8080  # Puerto interno del contenedor (opcional)
         env:

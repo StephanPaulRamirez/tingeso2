@@ -20,20 +20,20 @@ spring:
         - id: simulate-service
           uri: lb://simulate-service
           predicates:
-            - Path=/api/simulate/**
+            - Path=/api/v1/simulate/**
         - id: register-service
           uri: lb://register-service
           predicates:
-            - Path=/api/register/**
+            - Path=/api/v1/users/**
         - id: requestCredit-service
           uri: lb://requestCredit-service
           predicates:
-            - Path=/api/request/**
+            - Path=/api/v1/loan_requests/**, /api/v1/documents/**
         - id: evaluateCredit-service
           uri: lb://evaluateCredit-service
           predicates:
-            - Path=/api/evaluate/**
+            - Path=/api/v1/loanEvaluation/**, /api/v1/documents/**
         - id: followCredit-service
           uri: lb://followCredit-service
           predicates:
-            - Path=/api/follow/**, /api/docs/**
+            - Path=/api/v1/loanTracking/**

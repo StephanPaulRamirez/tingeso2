@@ -17,7 +17,7 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: simulate-service
+        - id: simulateService
           uri: lb://simulate-service
           predicates:
             - Path=/api/v1/simulate/**

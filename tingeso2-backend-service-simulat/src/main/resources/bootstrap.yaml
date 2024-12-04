@@ -1,6 +1,6 @@
 spring:
   application:
-    name: simulateService
+    name: simulate-service
   cloud:
     config:
       enabled: true

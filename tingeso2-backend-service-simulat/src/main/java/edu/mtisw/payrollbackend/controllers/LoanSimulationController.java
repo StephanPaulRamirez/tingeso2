@@ -13,7 +13,7 @@ public class LoanSimulationController {
     @Autowired
     private LoanSimulationService loanSimulationService;
 
-    @GetMapping("/")
+    @GetMapping("/sim")
     public ResponseEntity<Long> simulateController(@RequestParam Float amount,
                                                    @RequestParam Float period,
                                                    @RequestParam Float rate) {

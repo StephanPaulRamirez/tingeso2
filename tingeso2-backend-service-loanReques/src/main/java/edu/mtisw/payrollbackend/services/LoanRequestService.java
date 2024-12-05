@@ -18,10 +18,11 @@ public class LoanRequestService {
 
     public LoanRequestEntity saveLoanRequest(LoanRequestEntity loanRequest) {
 
+
         ResponseEntity<Long> simulation = restTemplate.getForEntity(
-                "http://simulate-service/api/v1/simulate/?amount=" +
+                "http://simulate-service/api/v1/simulate/sim?amount=" +
                         loanRequest.getRequestedAmount() +
-                         "&period=" +
+                        "&period=" +
                         loanRequest.getPeriod() +
                         "&rate=" +
                         loanRequest.getInterestRate(),
@@ -50,6 +51,4 @@ public class LoanRequestService {
 
         return Math.round(totalCost);
     }
-
-
 }

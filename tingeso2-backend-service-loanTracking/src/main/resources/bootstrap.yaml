@@ -1,6 +1,12 @@
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://eureka-service:8761/eureka/
 spring:
   application:
-    name: requestCredit-service
+    name: followCredit-service
   cloud:
     config:
       enabled: true

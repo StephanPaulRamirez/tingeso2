@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-deployment
+  labels:
+    app: config-service
+spec:
+  selector:
+    matchLabels:
+      app: config-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: config-service 
+    spec:
+      containers:
+      - name: config-service
+        image: stephanpaulramirez/config-service:latest
+        ports:
+        - containerPort: 8081  # Puerto interno del contenedor (opcional)
+        env:
+        - name: SERVER_PORT
+          value: "8081"  
+        - name: SPRING_CLOUD_CONFIG_URI
+          value: "https://github.com/StephanPaulRamirez/tingeso2.git" # URL del repositorio de configuración
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: config-service
+spec:
+  selector:
+    app: config-service  # Debe coincidir con las etiquetas del Deployment
+  ports:
+   - protocol: TCP
+     port: 8081  # Puerto expuesto dentro del cluster
+     targetPort: 8081  # Puerto del contenedor
+  type: ClusterIP  # Cambiar a LoadBalancer si necesitas acceso externo
+

@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: stephanpaulramirez/frontendMS:latest
+          image: stephanpaulramirez/frontendms:latest
           ports:
             - containerPort: 5173

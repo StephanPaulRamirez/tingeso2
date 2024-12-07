@@ -1,38 +1,63 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: simulate-service
+  name: simulate-deployment
   labels:
     app: simulate-service
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: simulate-service
+  replicas: 1
   template:
     metadata:
       labels:
         app: simulate-service
     spec:
       containers:
-      - name: simulate-service
-        image: stephanpaulramirez/simulate-service:latest
-        ports:
-        - containerPort: 8080  # Puerto interno del contenedor (opcional)
-        env:
-        - name: SERVER_PORT
-          value: "0"  # Puerto aleatorio
-        - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-          value: "http://eureka-service:8761/eureka"
+        - name: simulate-service-postgres
+          image: stephanpaulramirez/simulate-service:latest
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SPRING_CLOUD_CONFIG_URI # Nombre de la variable de entorno
+              value: http://config-service:8081
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE # Nombre de la variable de entorno
+              value: http://eureka-service:8761
+            - name: eureka.instance.preferIpAddress
+              value: "true"
+            - name: DB_HOST # Nombre de la variable de entorno
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-configmap # Nombre del configmap
+                  key: POSTGRES_DB_HOST # Nombre de la clave del configmap
+            - name: POSTGRES_DB_Simulate # Nombre de la variable de entorno en configmap
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-configmap # Nombre del configmap
+                  key: POSTGRES_DB_Simulate # Nombre de la clave del configmap
+            - name: POSTGRES_USER # Nombre de la variable de entorno
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-user-credentials # Nombre del secret asignado dentro del archivo postgres-user-secret.yml
+                  key: POSTGRES_USER # Nombre de la clave del secret
+            - name: POSTGRES_PASSWORD # Nombre de la variable de entorno
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-user-credentials
+                  key: POSTGRES_PASSWORD # Nombre de la clave del secret
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: simulate-service
+  labels:
+    app: simulate-service
 spec:
   selector:
     app: simulate-service
   ports:
-  - port: 80  # Puerto expuesto dentro del cluster
-    targetPort: 8080
-  type: ClusterIP
+    - protocol: TCP
+      port: 8086
+      targetPort: 8086
+  type: LoadBalancer

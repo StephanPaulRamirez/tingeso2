@@ -32,22 +32,28 @@ spec:
       containers:
       - image: postgres:latest
         name: postgres
+        imagePullPolicy: "IfNotPresent"
         env:
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: postgres-user-credentials
-              key: username
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
               name: postgres-user-credentials
-              key: password
-        - name: POSTGRES_DB
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB_Simulate
           valueFrom:
             configMapKeyRef:
-              name: postgres-db
-              key: name
+              name: postgres-configmap
+              key: POSTGRES_DB_Simulate
+        - name: POSTGRES_DB_Register
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-configmap
+              key: POSTGRES_DB_Register
+        - name: POSTGRES_DB_Request
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-configmap
+              key: POSTGRES_DB_Request
         ports:
         - containerPort: 5432
           name: postgres
@@ -58,6 +64,20 @@ spec:
       - name: postgres-persistent-storage
         persistentVolumeClaim:
           claimName: postgres-pv-claim
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv
+  labels:
+    app: postgres
+spec:
+  capacity:
+    storage: 2Gi  # Al menos 1 GiB recomendado
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data/postgres"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -71,17 +91,4 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 20Mi
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: postgres
-spec:
-  accessModes:
-    - ReadWriteOnce
-  capacity:
-    storage: 20Mi
-  hostPath:
-    path: /data/postgres
-  storageClassName: standard
+      storage: 2Gi

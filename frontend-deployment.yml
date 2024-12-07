@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: stephanpaulramirez/kubernetes-frontend:latest
+          image: stephanpaulramirez/frontendMS:latest
           ports:
             - containerPort: 5173

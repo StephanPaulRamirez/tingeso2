@@ -1,76 +1,14 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: postgres-simulatedb
+  name: postgres-configmap
+  labels:
+    app: postgres-configmap
 data:
-  host: postgres
-  name: Simulate
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: postgres-registerdb
-data:
-  host: postgres
-  name: Register
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: postgres-requestdb
-data:
-  host: postgres
-  name: Request
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: postgres-evaluatedb
-data:
-  host: postgres
-  name: Evaluate
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: postgres-followdb
-data:
-  host: postgres
-  name: Follow
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: postgres-init-script
-data:
-  init.sql: |
-    -- Crear bases de datos solo si no existen
-    DO $$ BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'Simulate') THEN
-        CREATE DATABASE Simulate;
-      END IF;
-    END $$;
-
-    DO $$ BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'Register') THEN
-        CREATE DATABASE Register;
-      END IF;
-    END $$;
-
-    DO $$ BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'Request') THEN
-        CREATE DATABASE Request;
-      END IF;
-    END $$;
-
-    DO $$ BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'Evaluate') THEN
-        CREATE DATABASE Evaluate;
-      END IF;
-    END $$;
-
-    DO $$ BEGIN
-      IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'Follow') THEN
-        CREATE DATABASE Follow;
-      END IF;
-    END $$;
+  POSTGRES_DB_HOST: postgres
+  #base de Simulate
+  POSTGRES_DB_Simulate: simulate
+  #base de Register
+  POSTGRES_DB_Register: register
+  #base de Request
+  POSTGRES_DB_Request: request

@@ -1,6 +1,7 @@
 package edu.mtisw.payrollbackend.services;
 
 import edu.mtisw.payrollbackend.entities.LoanRequestEntity;
+import edu.mtisw.payrollbackend.repositories.LoanRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -16,6 +17,9 @@ public class LoanRequestService {
 
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    LoanRequestRepository loanRequestRepository;
 
     public LoanRequestEntity getLoanRequestById(Long id){
         ResponseEntity<LoanRequestEntity> loanRequest = restTemplate.getForEntity(
@@ -33,13 +37,7 @@ public class LoanRequestService {
     }
 
     public LoanRequestEntity updateLoanRequest(LoanRequestEntity loanRequest) {
-        ResponseEntity<LoanRequestEntity> response = restTemplate.exchange(
-                "http://followCredit-service/api/v1/loanTracking/",
-                HttpMethod.PUT,
-                new HttpEntity<>(loanRequest),
-                LoanRequestEntity.class
-        );
-        return response.getBody();
+        return loanRequestRepository.save(loanRequest);
     }
 
 }

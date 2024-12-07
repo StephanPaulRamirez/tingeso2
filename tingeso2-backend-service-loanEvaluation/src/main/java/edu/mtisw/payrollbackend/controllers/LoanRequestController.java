@@ -12,6 +12,7 @@ import java.util.List;
 @RequestMapping("/api/v1/loanEvaluation")
 //@CrossOrigin("*")
 public class LoanRequestController {
+
     @Autowired
     LoanRequestService loanRequestService;
 
